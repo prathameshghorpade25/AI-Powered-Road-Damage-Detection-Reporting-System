@@ -1,4 +1,5 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
+
 import { fetchAuthorityCases, fetchAuthoritySummary } from '../api/authorityApi';
 import type { OpsCase, AuthoritySummary } from '../opsTypes';
 import { formatStatusLabel, statusBadgeClass } from '../mockOpsData';
