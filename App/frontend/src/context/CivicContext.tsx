@@ -274,9 +274,9 @@ export function CivicProvider({ children }: { children: ReactNode }) {
 
   const refreshNotifications = useCallback(async () => {
     try {
-      await fetchNotifications(deviceId);
+      const { notifications: serverNotifications } = await fetchNotifications(deviceId);
       // Map server notifications to local format
-      const mapped = serverNotifications.map((n) => ({
+      const mapped = serverNotifications.map((n: any) => ({
         id: n.id,
         ts: n.created_at_ms,
         title: n.title,
@@ -287,8 +287,8 @@ export function CivicProvider({ children }: { children: ReactNode }) {
       const merged = [...mapped];
       // Add any local-only notifications that aren't on server
       setNotifications((prev) => {
-        const serverIds = new Set(mapped.map((n) => n.id));
-        const localOnly = prev.filter((n) => !serverIds.has(n.id));
+        const serverIds = new Set(mapped.map((n: any) => n.id));
+        const localOnly = prev.filter((n: any) => !serverIds.has(n.id));
         return [...merged, ...localOnly].slice(0, 100);
       });
     } catch {
