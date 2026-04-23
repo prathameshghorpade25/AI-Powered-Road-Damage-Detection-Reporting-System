@@ -108,7 +108,7 @@ export default function AuthorityReportsPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {dummyReports.map((r) => (
+                  {dummyReports.map((r: OpsCase) => (
                     <tr 
                       key={r.id} 
                       className={selectedId === r.id ? 'is-selected' : ''}

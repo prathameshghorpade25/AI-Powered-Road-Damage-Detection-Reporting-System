@@ -144,7 +144,7 @@ export default function AuthorityDashboardPage() {
     return [...cases]
       .sort((a, b) => (b.updatedAtMs ?? b.submittedAtMs ?? 0) - (a.updatedAtMs ?? a.submittedAtMs ?? 0))
       .slice(0, 5)
-      .map((c) => ({
+      .map((c: OpsCase) => ({
         key: c.id,
         time: new Date(c.updatedAtMs ?? c.submittedAtMs ?? Date.now()).toLocaleTimeString([], {
           hour: '2-digit', minute: '2-digit',
