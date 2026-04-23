@@ -1,0 +1,273 @@
+/* AI Composer Page - Neural Workspace Design */
+
+.composer-container {
+  width: 100%;
+  max-width: 100%; /* Fill the entire available dashboard space */
+  margin: 0;
+  padding: 0.5rem 0 4rem;
+  animation: fade-in 0.8s ease-out;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Context Strip */
+.context-strip {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+}
+
+.context-image-mini {
+  width: 60px;
+  height: 60px;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.context-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.context-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.context-value {
+  font-size: 0.9rem;
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.context-badge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: rgba(139, 92, 246, 0.2);
+  color: #c4b5fd;
+}
+
+/* Neural Workspace */
+.neural-workspace {
+  position: relative;
+  background: rgba(2, 6, 23, 0.4);
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  min-height: 400px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.neural-workspace.is-generating {
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.05);
+}
+
+.neural-workspace-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.ai-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #64748b;
+}
+
+.status-dot.active {
+  background: #a78bfa;
+  box-shadow: 0 0 10px #a78bfa;
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Generation Overlay */
+.thought-stream-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  text-align: center;
+}
+
+.neural-core-icon {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  animation: float-ai 3s ease-in-out infinite;
+}
+
+@keyframes float-ai {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.05); }
+}
+
+.thought-line {
+  height: 1.5rem;
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  color: #a78bfa;
+  opacity: 0.8;
+  animation: slide-thought 0.5s ease-out;
+}
+
+@keyframes slide-thought {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 0.8; transform: translateY(0); }
+}
+
+/* Draft Area */
+.draft-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: fade-in 0.5s ease-out;
+}
+
+.draft-textarea {
+  width: 100%;
+  height: 320px;
+  background: rgba(2, 6, 23, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  color: #f8fafc;
+  font-family: inherit;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.draft-textarea:focus {
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.draft-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: -0.5rem;
+}
+
+.mini-action-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s;
+}
+
+.mini-action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+}
+
+/* Typewriter Cursor */
+.typewriter-cursor::after {
+  content: '|';
+  animation: blink 1s step-end infinite;
+  color: #a78bfa;
+}
+
+@keyframes blink {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Actions */
+.composer-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2.5rem;
+}
+
+.dispatch-btn {
+  position: relative;
+  overflow: hidden;
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px -5px rgba(124, 58, 237, 0.5);
+}
+
+.dispatch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px -5px rgba(124, 58, 237, 0.6);
+}
+
+.dispatch-btn:disabled {
+  background: #1e293b;
+  color: #64748b;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.dispatch-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: btn-sweep 3s infinite;
+}
+
+@keyframes btn-sweep {
+  0% { left: -100%; }
+  20% { left: 100%; }
+  100% { left: 100%; }
+}

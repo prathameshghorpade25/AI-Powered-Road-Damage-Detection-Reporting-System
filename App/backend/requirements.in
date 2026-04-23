@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+ultralytics
+torch
+pillow
+python-multipart
+motor
+python-dotenv
+
+# dev/test
+pytest
+httpx
+pip-tools
+

@@ -24,11 +24,77 @@ In this project, I fine-tuned a Yolov8 model on a pothole dataset (model can be 
 ## Repository Structure
 
 ```
-├── training/        # YOLOv8 fine-tuning, configs, metrics
-├── inference/       # FastAPI inference server + Dockerfile (GPU)
-├── mobile/          # React Native (Expo) app
+├── App/
+│   ├── backend/     # FastAPI backend (canonical)
+│   └── frontend/    # Web user dashboard (canonical)
+├── training/        # YOLOv8 fine-tuning, configs, metrics (legacy)
+├── inference/       # Inference server + Dockerfile (legacy)
+├── mobile/          # React Native (Expo) app (legacy)
 ├── README.md        # Project Readme
 ```
+
+## Local development (canonical apps)
+
+### Backend API (FastAPI) — port 8000
+
+From `pothole-detection-yolo/`:
+
+```bash
+cd App/backend
+python -m pip install -r requirements.txt
+python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+- **Health check**: `http://127.0.0.1:8000/health`
+- **Detect**: `http://127.0.0.1:8000/detect` (multipart form field name: `file`)
+
+Notes:
+- The backend is a proper Python package under `App/backend/app/` so imports look like `from app.auth import ...`.
+- Dependencies are **pinned** in `App/backend/requirements.txt` (generated from `requirements.in` via `pip-tools`).
+- If pothole **count** feels off, tune inference with env vars:
+  - `YOLO_CONF` (default `0.20`): lower to detect more (may increase false positives), raise to be stricter
+  - `YOLO_IOU` (default `0.45`): lower to merge duplicates more aggressively, raise if nearby potholes get merged
+  - `YOLO_IMGSZ` (default `960`): raise to better detect small potholes (slower)
+  - `YOLO_MAXDET` (default `100`): upper bound on detections returned
+
+### User panel (web dashboard) — port 5173
+
+From `pothole-detection-yolo/`:
+
+```bash
+cd App/frontend
+npm install
+npm run dev -- --host 127.0.0.1 --port 5173
+```
+
+- **User panel link**: `http://127.0.0.1:5173/`
+- **Routes** (3-zone dashboard: sidebar · main · trust panel):
+  - **Home** (`/`): quick actions, live status, recent reports, AI activity, map preview, drafts/offline.
+  - **Scan road** (`/scan`): YOLO scan (feeds the “live AI result” + activity feed).
+  - **Report issue** (`/report`): guided report wizard (device-scoped list via `device_id`).
+  - **My reports** (`/reports`), **Saved places** (`/places`), **Notifications** (`/notifications`), **Settings** (`/settings`), **Privacy** (`/privacy`).
+- Configure the web app with `App/frontend/.env` (see `App/frontend/.env.example`):
+  - `VITE_API_BASE_URL` (e.g. `http://127.0.0.1:8000`)
+  - `VITE_API_KEY` (must match backend `API_KEY` when auth is enabled)
+
+### Citizen reporting API (backend)
+
+All routes require the same `x-api-key` header as the rest of the API when `API_KEY` is set.
+
+- `POST /citizen/geocode/reverse` — JSON `{ "lat", "lon" }` → address line, landmark suggestions, ward hint (uses [Nominatim](https://nominatim.org/); set a real contact in `NOMINATIM_USER_AGENT`).
+- `POST /citizen/reports/preview-message` — draft authority message without saving (for the confirmation step).
+- `POST /citizen/reports/submit` — `multipart/form-data`: field `payload` (JSON) + optional `image` file.
+- `GET /citizen/reports?device_id=...` — list reports for that device only (omit `device_id` → empty list).
+- `GET /citizen/reports/{report_id}` — tracking metadata + **demo lifecycle** (`lifecycle` block simulates authority progression by report age; replace with real webhooks in production).
+
+**LLM drafting (optional):** set `ANTHROPIC_API_KEY` on the server only. If unset, the API falls back to a deterministic template message. **Never** put provider API keys in the frontend or in git.
+
+### Authority panel (web dashboard) — port 5174 (planned)
+
+We will implement this as a **separate app** so it opens on its own link/port (separate from the user panel).
+
+- **Planned canonical location**: `pothole-detection-yolo/apps/authority-dashboard`
+- **Planned link**: `http://127.0.0.1:5174/`
 
 ## Model Training
 
