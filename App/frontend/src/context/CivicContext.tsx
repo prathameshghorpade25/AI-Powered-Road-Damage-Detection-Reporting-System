@@ -274,7 +274,7 @@ export function CivicProvider({ children }: { children: ReactNode }) {
 
   const refreshNotifications = useCallback(async () => {
     try {
-      const { notifications: serverNotifications, unread_count } = await fetchNotifications(deviceId);
+      await fetchNotifications(deviceId);
       // Map server notifications to local format
       const mapped = serverNotifications.map((n) => ({
         id: n.id,

@@ -3,7 +3,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useCivic } from '../context/CivicContext';
 import './dashboard.css';
 
-const AUTHORITY_ORIGIN = import.meta.env.VITE_AUTHORITY_ORIGIN ?? 'http://localhost:5174';
+
 
 const nav = [
   { to: '/', label: 'Home', end: true },

@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+
 import { useCivic } from '../context/CivicContext';
 import { submitCitizenReport } from '../report/reportApi';
 import { useNavigate } from 'react-router-dom';
@@ -46,7 +47,7 @@ export default function AiComposerPage() {
     const speed = 15; // ms per character
     
     const timer = setInterval(() => {
-      setDisplayedMessage((prev) => text.slice(0, index));
+      setDisplayedMessage(text.slice(0, index));
       index++;
       if (index > text.length) {
         clearInterval(timer);
@@ -177,7 +178,15 @@ export default function AiComposerPage() {
           <span className="context-label">Detected Anomalies</span>
           <div className="context-value">
             <span style={{ fontWeight: 700, color: '#fff' }}>{civic.lastScan?.count || 0} Potholes</span>
-            <span className="context-badge">{civic.lastScan?.severity?.toUpperCase() || 'MODERATE'}</span>
+            <span className="context-badge">
+              {(() => {
+                const dets = civic.lastScan?.detections || [];
+                if (!dets.length) return 'MODERATE';
+                const hasSerious = dets.some(d => d.condition === 'serious');
+                const hasModerate = dets.some(d => d.condition === 'moderate');
+                return (hasSerious ? 'SEVERE' : hasModerate ? 'MODERATE' : 'MINOR');
+              })()}
+            </span>
           </div>
         </div>
         <div style={{ marginLeft: 'auto', textAlign: 'right' }} className="context-info">

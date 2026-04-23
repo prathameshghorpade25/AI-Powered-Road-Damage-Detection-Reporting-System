@@ -69,7 +69,7 @@ export default function NotificationsPage() {
           <p className="dash-muted">No notifications yet. Submit a report to start the lifecycle.</p>
         ) : (
           <ul className="dash-mini-list" style={{ listStyle: 'none', padding: 0 }}>
-            {notifications.map((n) => (
+            {sortedNotifications.map((n) => (
               <li
                 key={n.id}
                 style={{

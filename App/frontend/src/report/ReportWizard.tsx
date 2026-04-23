@@ -242,10 +242,6 @@ export default function ReportWizard() {
     }
   }, [draft.step, draft.location.lat, locModalOpen]);
 
-  const copyCoords = () => {
-    if (draft.location.lat == null || draft.location.lon == null) return;
-    void navigator.clipboard?.writeText(`${draft.location.lat.toFixed(6)}, ${draft.location.lon.toFixed(6)}`);
-  };
 
   const onMediaPick = useCallback((file: File | null) => {
     if (!file || !file.type.startsWith('image/')) return;
@@ -510,19 +506,6 @@ export default function ReportWizard() {
     doc.save(`${result.reportId}.pdf`);
   };
 
-  const shareReport = async () => {
-    if (!result) return;
-    const text = `Road report ${result.reportId} — ${result.routed.authority_name ?? 'local authority'}`;
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: 'Road condition report', text });
-      } catch {
-        void navigator.clipboard?.writeText(text);
-      }
-    } else {
-      void navigator.clipboard?.writeText(text);
-    }
-  };
 
   const renderNavArrows = () => (
     <div className="rep-panel-footer">
